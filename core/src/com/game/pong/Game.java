@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 
 public class Game extends ApplicationAdapter {
 	ShapeRenderer shapeRenderer;
@@ -15,11 +16,9 @@ public class Game extends ApplicationAdapter {
 	@Override
 	public void create () {
 		shapeRenderer = new ShapeRenderer();
-		leftPaddle = new Paddle(Side.LEFT);
-
+		leftPaddle = new Paddle(Side.LEFT, 50, 7.5f, 400, 35);
 	}
 
-	float x = 0;
 	@Override
 	public void render () {
 		leftPaddle.update();
@@ -32,6 +31,7 @@ public class Game extends ApplicationAdapter {
 		leftPaddle.draw(shapeRenderer);
 		shapeRenderer.end();
 	}
+
 	@Override
 	public void dispose () {
 		shapeRenderer.dispose();
