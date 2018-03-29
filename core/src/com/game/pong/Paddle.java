@@ -31,13 +31,13 @@ public class Paddle {
                 height = length;
                 width = thickness;
                 x = 0;
-                y =  Gdx.app.getGraphics().getHeight() / 2 + height / 2;
+                y =  Gdx.app.getGraphics().getHeight() / 2 - height / 2;
                 break;
             case RIGHT:
                 height = length;
                 width = thickness;
                 x = Gdx.app.getGraphics().getWidth() - width;
-                y = Gdx.app.getGraphics().getHeight() / 2 + height / 2;
+                y = Gdx.app.getGraphics().getHeight() / 2 - height / 2;
                 break;
             default:
                 x = 0;
