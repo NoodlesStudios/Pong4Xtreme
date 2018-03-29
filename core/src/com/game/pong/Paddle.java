@@ -53,4 +53,20 @@ public class Paddle {
             pos.y = newPos;
         }
     }
+
+    public float getLength(){
+        if (side == Side.LEFT || side == Side.RIGHT){
+            return height;
+        }
+        if (side == Side.UP || side == Side.DOWN){
+            return width;
+        }
+    }
+
+    public vector2 getXPos(){
+        return pos.x;
+    }
+    public vector2 getYPos(){
+        return pos.y;
+    }
 }
