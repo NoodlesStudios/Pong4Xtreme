@@ -16,7 +16,7 @@ public class Game extends ApplicationAdapter {
 	@Override
 	public void create () {
 		shapeRenderer = new ShapeRenderer();
-		leftPaddle = new Paddle(Side.LEFT, 50, 7.5f, 400, 35);
+
 	}
 
 	@Override
