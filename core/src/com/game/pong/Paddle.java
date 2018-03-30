@@ -116,7 +116,7 @@ public class Paddle {
         return rect.getY();
     }
 
-    public boolean intersects(Rectangle rect) {
-        return this.rect.contains(rect);
+    public Rectangle getRect() {
+        return rect;
     }
 }
