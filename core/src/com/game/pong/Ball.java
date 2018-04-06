@@ -10,17 +10,17 @@ import java.util.*;
 //MULTIPLY X SPEED BY -1
 public class Ball {
     //instance variables
-    private Rectangle rect;
+    private GameBoard board;
     private Vector2 velocity;
     private float side;
     private float angle;
 
     //ctor
-    public Ball(Board board, float size) {
+    public Ball(GameBoard board, float size) {
         velocity = new Vector2();
         angle = 0;
         side = size;
-        rect = new Rectangle(board.getCen(), board.getCen(), side, side);
+        this.board = new GameBoard(board.getCen(), board.getCen(), side); //TODO
         velocity.setToRandomDirection();
     }
 
@@ -35,7 +35,11 @@ public class Ball {
 
 
     public boolean hasHitWall(){
-
+        if (velocity.x > board.getSide() || velocity.x < 0){
+            return true;
+        }else if (velocity.y > board.getSide() || velocity.y < 0){
+            return true;
+        }else return false;
     }
 
     public void draw(ShapeRenderer renderer) {
@@ -43,7 +47,7 @@ public class Ball {
         renderer.rect(velocity.x, velocity.y, side, side); //ball is a square
     }
 
-    public Rectangle getRect(){
-        return rect;
+    public GameBoard getBoard(){
+        return board;
     }
 }
