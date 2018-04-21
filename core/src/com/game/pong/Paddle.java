@@ -5,9 +5,12 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.game.pong.input.PaddleInput;
 
 public class Paddle {
     private Board board;
+    private PaddleInput input;
+
     private Rectangle rect;
     private Side side;
 
@@ -16,8 +19,10 @@ public class Paddle {
     private float velocity;
     private float accel;
 
-    Paddle(Side side, Board board, float length, float thickness, float maxSpeed, float accel) {
+    Paddle(Side side, Board board, PaddleInput input, float length, float thickness, float maxSpeed, float accel) {
         this.board = board;
+        this.input = input;
+
         this.side = side;
 
         this.maxSpeed = maxSpeed;
@@ -38,7 +43,7 @@ public class Paddle {
             case RIGHT:
                 height = length;
                 width = thickness;
-                x = Gdx.app.getGraphics().getWidth() - width;
+                x = board.getWidth() - width;
                 y = board.getHeight() / 2 - height / 2;
                 break;
             default:
@@ -53,19 +58,19 @@ public class Paddle {
     }
 
     public void draw(ShapeRenderer renderer) {
-        renderer.setColor(0, 1, 0, 1);
+        renderer.setColor(0, 1, 0,1);
         Vector2 pos = board.transformCoord(new Vector2(rect.getX(), rect.getY()));
         renderer.rect(pos.x, pos.y, rect.getWidth(), rect.getHeight());
     }
 
     public void update() {
         // If we are pressing a key, change the velocity
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+        if (input.isForwardPressed()) {
             velocity += accel;
             if (velocity > maxSpeed) {
                 velocity = maxSpeed;
             }
-        } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+        } else if (input.isBackwardsPressed()) {
             velocity -= accel;
             if (velocity < -maxSpeed) {
                 velocity = -maxSpeed;

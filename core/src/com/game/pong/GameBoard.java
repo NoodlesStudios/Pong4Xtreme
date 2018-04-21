@@ -1,9 +1,11 @@
 package com.game.pong;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.game.pong.input.KeyboardInput;
 
 public class GameBoard extends Board {
     private float side;
@@ -16,11 +18,17 @@ public class GameBoard extends Board {
     public GameBoard(float x, float y, float side){
         super(x, y, side, side);
         this.side = side;
+
         ball = new Ball(this, 10, this.getCen(), this.getCen());
-        leftPaddle = new Paddle(Side.LEFT, this, 49, 7.5f, 400, 35);
-        rightPaddle = new Paddle(Side.RIGHT, this, 49, 7.5f, 400, 35);
-        upPaddle = new Paddle(Side.UP, this, 49, 7.5f, 400, 35);
-        downPaddle = new Paddle(Side.DOWN, this, 49, 7.5f, 400, 35);
+        KeyboardInput leftInput = new KeyboardInput(Input.Keys.W, Input.Keys.S);
+        KeyboardInput rightInput = new KeyboardInput(Input.Keys.UP, Input.Keys.DOWN);
+        KeyboardInput upInput = new KeyboardInput(Input.Keys.D, Input.Keys.A);
+        KeyboardInput downInput = new KeyboardInput(Input.Keys.RIGHT, Input.Keys.LEFT);
+
+        leftPaddle = new Paddle(Side.LEFT, this, leftInput, 49, 7.5f, 400, 35);
+        rightPaddle = new Paddle(Side.RIGHT, this, rightInput, 49, 7.5f, 400, 35);
+        upPaddle = new Paddle(Side.UP, this, upInput, 49, 7.5f, 400, 35);
+        downPaddle = new Paddle(Side.DOWN, this, downInput, 49, 7.5f, 400, 35);
     }
 
     @Override
