@@ -35,7 +35,9 @@ public class Ball {
     }
 
     public void updatePos() {
-        rect.setPosition(pos.add(velocity.scl(Gdx.graphics.getDeltaTime())));
+        Vector2 scaledVel = new Vector2(this.velocity);
+        scaledVel.scl(Gdx.graphics.getDeltaTime());
+        rect.setPosition(pos.add(scaledVel));
     }
 
     public boolean hasHitWall(){
