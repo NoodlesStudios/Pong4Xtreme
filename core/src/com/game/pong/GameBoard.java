@@ -50,13 +50,13 @@ public class GameBoard extends Board {
         downPaddle.update();
         ball.updatePos();
 
-        if (leftPaddle.intersects(ball.getBoard().getRect())) {
+        if (leftPaddle.intersects(ball.getRect())) {
             ball.updateAngle(leftPaddle);
-        }else if (rightPaddle.intersects(ball.getBoard().getRect())) {
+        }else if (rightPaddle.intersects(ball.getRect())) {
             ball.updateAngle(rightPaddle);
-        }else if (upPaddle.intersects(ball.getBoard().getRect())) {
+        }else if (upPaddle.intersects(ball.getRect())) {
             ball.updateAngle(upPaddle);
-        }else if (downPaddle.intersects(ball.getBoard().getRect())) {
+        }else if (downPaddle.intersects(ball.getRect())) {
             ball.updateAngle(downPaddle);
         }
     }

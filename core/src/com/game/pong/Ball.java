@@ -55,4 +55,8 @@ public class Ball {
     public GameBoard getBoard(){
         return board;
     }
+
+    public Rectangle getRect(){
+        return rect;
+    }
 }
