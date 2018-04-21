@@ -1,24 +1,21 @@
 package com.game.pong;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.game.pong.input.KeyboardInput;
 
 public class GameBoard extends Board {
-    private float side;
+    private float size;
     private Ball ball;
     private Paddle leftPaddle;
     private Paddle rightPaddle;
     private Paddle upPaddle;
     private Paddle downPaddle;
 
-    public GameBoard(float x, float y, float side){
-        super(x, y, side, side);
-        this.side = side;
+    public GameBoard(float x, float y, float size){
+        super(x, y, size, size);
+        this.size = size;
 
         ball = new Ball(this, 10, this.getCen(), this.getCen());
         KeyboardInput leftInput = new KeyboardInput(Input.Keys.W, Input.Keys.S);
@@ -38,6 +35,8 @@ public class GameBoard extends Board {
 
         leftPaddle.draw(renderer);
         rightPaddle.draw(renderer);
+        upPaddle.draw(renderer);
+        downPaddle.draw(renderer);
         ball.draw(renderer);
 
         renderer.end();
@@ -66,12 +65,12 @@ public class GameBoard extends Board {
      * Get sides, centers, or the entire rectangle itself
      * @return float, Rectangle(libgdx)
      */
-    public float getSide(){
-        return side;
+    public float getSize(){
+        return size;
     }
 
     public float getCen(){
-        return side/2;
+        return size /2;
     }
 
     public Rectangle getRect(){
