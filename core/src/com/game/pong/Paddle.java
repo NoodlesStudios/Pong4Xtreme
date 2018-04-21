@@ -1,7 +1,6 @@
 package com.game.pong;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -46,6 +45,18 @@ public class Paddle {
                 x = board.getWidth() - width;
                 y = board.getHeight() / 2 - height / 2;
                 break;
+            case UP:
+                width = length;
+                height = thickness;
+                x = board.getWidth() / 2 - width / 2;
+                y = 0;
+                break;
+            case DOWN:
+                width = length;
+                height = thickness;
+                x = board.getWidth() / 2 - width / 2;
+                y = board.getHeight() - height;
+                break;
             default:
                 x = 0;
                 y = 0;
@@ -89,8 +100,8 @@ public class Paddle {
         float newPos = rect.getY() + (velocity * Gdx.graphics.getDeltaTime());
 
         // Check for wall collisions
-        if (newPos > Gdx.app.getGraphics().getHeight() - rect.getHeight()) {
-            newPos = Gdx.app.getGraphics().getHeight() - rect.getHeight();
+        if (newPos > board.getHeight() - rect.getHeight()) {
+            newPos = board.getHeight() - rect.getHeight();
 
             // Makes moving off walls much more natural
             velocity = 0;
@@ -130,10 +141,10 @@ public class Paddle {
             case LEFT:
                 break;
             case RIGHT:
-                pos.x += ball.getSide();
+                pos.x += ball.getSize();
                 break;
             case UP:
-                pos.y += ball.getSide();
+                pos.y += ball.getSize();
                 break;
             case DOWN:
                 break;
