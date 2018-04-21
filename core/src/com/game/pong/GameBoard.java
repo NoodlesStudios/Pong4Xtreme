@@ -16,7 +16,7 @@ public class GameBoard extends Board {
     public GameBoard(float x, float y, float side){
         super(x, y, side, side);
         this.side = side;
-        ball = new Ball(this, 10);
+        ball = new Ball(this, 10, this.getCen(), this.getCen());
         leftPaddle = new Paddle(Side.LEFT, this, 49, 7.5f, 400, 35);
         rightPaddle = new Paddle(Side.RIGHT, this, 49, 7.5f, 400, 35);
         upPaddle = new Paddle(Side.UP, this, 49, 7.5f, 400, 35);
@@ -40,20 +40,16 @@ public class GameBoard extends Board {
         rightPaddle.update();
         upPaddle.update();
         downPaddle.update();
-
+        ball.updatePos();
 
         if (leftPaddle.intersects(ball.getBoard().getRect())) {
             ball.updateAngle(leftPaddle);
-            ball.updateSpeed();
         }else if (rightPaddle.intersects(ball.getBoard().getRect())) {
             ball.updateAngle(rightPaddle);
-            ball.updateSpeed();
         }else if (upPaddle.intersects(ball.getBoard().getRect())) {
             ball.updateAngle(upPaddle);
-            ball.updateSpeed();
         }else if (downPaddle.intersects(ball.getBoard().getRect())) {
             ball.updateAngle(downPaddle);
-            ball.updateSpeed();
         }
     }
 
