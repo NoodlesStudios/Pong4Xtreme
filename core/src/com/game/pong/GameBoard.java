@@ -17,20 +17,31 @@ public class GameBoard extends Board {
         super(x, y, side, side);
         this.side = side;
         ball = new Ball(this, 10);
-        leftPaddle = new Paddle(Side.LEFT, 49, 7.5f, 400, 35);
-        rightPaddle = new Paddle(Side.RIGHT, 49, 7.5f, 400, 35);
-        upPaddle = new Paddle(Side.UP, 49, 7.5f, 400, 35);
-        downPaddle = new Paddle(Side.DOWN, 49, 7.5f, 400, 35);
+        leftPaddle = new Paddle(Side.LEFT, this, 49, 7.5f, 400, 35);
+        rightPaddle = new Paddle(Side.RIGHT, this, 49, 7.5f, 400, 35);
+        upPaddle = new Paddle(Side.UP, this, 49, 7.5f, 400, 35);
+        downPaddle = new Paddle(Side.DOWN, this, 49, 7.5f, 400, 35);
     }
 
     @Override
-    public void draw(ShapeRenderer renderer){
-        renderer.setColor(Color.BLACK);
-        renderer.rect(0,0,side,side); //use Gdx.getGraphics().getHeight()/Width() inside Game
+    public void draw(ShapeRenderer renderer) {
+        renderer.begin(ShapeRenderer.ShapeType.Filled);
+
+        leftPaddle.draw(renderer);
+        rightPaddle.draw(renderer);
+        ball.draw(renderer);
+
+        renderer.end();
     }
 
     @Override
     public void update(){
+        leftPaddle.update();
+        rightPaddle.update();
+        upPaddle.update();
+        downPaddle.update();
+
+
         if (leftPaddle.intersects(ball.getBoard().getRect())) {
             ball.updateAngle(leftPaddle);
             ball.updateSpeed();

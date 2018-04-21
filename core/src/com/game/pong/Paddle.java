@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Paddle {
+    private Board board;
     private Rectangle rect;
     private Side side;
 
@@ -15,7 +16,8 @@ public class Paddle {
     private float velocity;
     private float accel;
 
-    Paddle(Side side, float length, float thickness, float maxSpeed, float accel) {
+    Paddle(Side side, Board board, float length, float thickness, float maxSpeed, float accel) {
+        this.board = board;
         this.side = side;
 
         this.maxSpeed = maxSpeed;
@@ -31,13 +33,13 @@ public class Paddle {
                 height = length;
                 width = thickness;
                 x = 0;
-                y =  Gdx.app.getGraphics().getHeight() / 2 - height / 2;
+                y = board.getHeight() / 2 - height / 2;
                 break;
             case RIGHT:
                 height = length;
                 width = thickness;
                 x = Gdx.app.getGraphics().getWidth() - width;
-                y = Gdx.app.getGraphics().getHeight() / 2 - height / 2;
+                y = board.getHeight() / 2 - height / 2;
                 break;
             default:
                 x = 0;
@@ -52,7 +54,8 @@ public class Paddle {
 
     public void draw(ShapeRenderer renderer) {
         renderer.setColor(0, 1, 0, 1);
-        renderer.rect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+        Vector2 pos = board.transformCoord(new Vector2(rect.getX(), rect.getY()));
+        renderer.rect(pos.x, pos.y, rect.getWidth(), rect.getHeight());
     }
 
     public void update() {

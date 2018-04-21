@@ -18,4 +18,12 @@ public abstract class Board {
     public abstract void draw(ShapeRenderer renderer);
 
     public abstract void update();
+
+    public float getWidth() {
+        return rect.getWidth();
+    }
+
+    public float getHeight() {
+        return rect.getHeight();
+    }
 }

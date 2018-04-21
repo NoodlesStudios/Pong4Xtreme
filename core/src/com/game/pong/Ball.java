@@ -1,11 +1,7 @@
 package com.game.pong;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import java.util.*;
 
 //MULTIPLY X SPEED BY -1
 public class Ball {
@@ -20,7 +16,7 @@ public class Ball {
         velocity = new Vector2();
         angle = 0;
         side = size;
-        this.board = new GameBoard(board.getCen(), board.getCen(), side); //TODO
+        this.board = board;
         velocity.setToRandomDirection();
     }
 
