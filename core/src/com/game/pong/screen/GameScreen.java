@@ -12,6 +12,7 @@ public class GameScreen implements Screen {
 
     GameBoard gameBoard;
 
+
     public GameScreen() {
         renderer = new ShapeRenderer();
 

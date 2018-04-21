@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.game.pong.input.KeyboardInput;
 
 public class GameBoard extends Board {
@@ -50,13 +51,13 @@ public class GameBoard extends Board {
         downPaddle.update();
         ball.updatePos();
 
-        if (leftPaddle.intersects(ball.getRect())) {
+        if (leftPaddle.intersects(ball)) {
             ball.updateAngle(leftPaddle);
-        }else if (rightPaddle.intersects(ball.getRect())) {
+        } else if (rightPaddle.intersects(ball)) {
             ball.updateAngle(rightPaddle);
-        }else if (upPaddle.intersects(ball.getRect())) {
+        } else if (upPaddle.intersects(ball)) {
             ball.updateAngle(upPaddle);
-        }else if (downPaddle.intersects(ball.getRect())) {
+        } else if (downPaddle.intersects(ball)) {
             ball.updateAngle(downPaddle);
         }
     }

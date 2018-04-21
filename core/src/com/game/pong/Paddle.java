@@ -124,7 +124,24 @@ public class Paddle {
         return rect.getY();
     }
 
-    public boolean intersects(Rectangle rect) {
-        return this.rect.contains(rect);
+    public boolean intersects(Ball ball) {
+        Vector2 pos = new Vector2(ball.getPos());
+        switch (side) {
+            case LEFT:
+                break;
+            case RIGHT:
+                pos.x += ball.getSide();
+                break;
+            case UP:
+                pos.y += ball.getSide();
+                break;
+            case DOWN:
+                break;
+        }
+        return this.rect.contains(pos);
+    }
+
+    public Side getSide() {
+        return side;
     }
 }

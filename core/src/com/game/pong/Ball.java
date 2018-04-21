@@ -15,7 +15,6 @@ public class Ball {
     private Vector2 pos;
     private float side;
     private float angle;
-    private Rectangle rect;
 
     //ctor
     public Ball(GameBoard board, float size, float x, float y) {
@@ -23,21 +22,28 @@ public class Ball {
         pos = new Vector2(x,y);
         angle = 0;
         side = size;
-        rect = new Rectangle(x, y, side, side);
         this.board = board;
         velocity.setToRandomDirection();
         velocity.setLength(100);
     }
 
     public void updateAngle(Paddle paddle) {
-        angle = (float) Math.asin((velocity.y - paddle.getY() + (paddle.getLength() / 2)) / (paddle.getLength() / 2));
-        velocity.rotateRad(angle);
+        float ballY = pos.y;
+        if (ballY < paddle.getY()) {
+            ballY += side;
+        }
+        angle = (float) Math.asin((ballY - (paddle.getY() + (paddle.getLength() / 2))) / (paddle.getLength() / 2));
+
+        if (paddle.getSide() == Side.RIGHT) {
+            angle += Math.PI;
+        }
+        velocity.setAngleRad(angle);
     }
 
     public void updatePos() {
         Vector2 scaledVel = new Vector2(this.velocity);
         scaledVel.scl(Gdx.graphics.getDeltaTime());
-        rect.setPosition(pos.add(scaledVel));
+        pos.add(scaledVel);
     }
 
     public boolean hasHitWall(){
@@ -50,15 +56,15 @@ public class Ball {
 
     public void draw(ShapeRenderer renderer) {
         renderer.setColor(0, 1, 0, 1);
-        Vector2 transformed = board.transformCoord(new Vector2(rect.getX(), rect.getY()));
-        renderer.rect(transformed.x, transformed.y, rect.getWidth(), rect.getHeight());
+        Vector2 transformed = board.transformCoord(pos);
+        renderer.rect(transformed.x, transformed.y, side, side);
     }
 
-    public GameBoard getBoard(){
-        return board;
+    public Vector2 getPos() {
+        return pos;
     }
 
-    public Rectangle getRect(){
-        return rect;
+    public float getSide() {
+        return side;
     }
 }
