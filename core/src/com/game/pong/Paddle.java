@@ -1,12 +1,15 @@
 package com.game.pong;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.game.pong.input.PaddleInput;
 
 public class Paddle {
+    private Board board;
+    private PaddleInput input;
+
     private Rectangle rect;
     private Side side;
 
@@ -15,7 +18,10 @@ public class Paddle {
     private float velocity;
     private float accel;
 
-    Paddle(Side side, float length, float thickness, float maxSpeed, float accel) {
+    Paddle(Side side, Board board, PaddleInput input, float length, float thickness, float maxSpeed, float accel) {
+        this.board = board;
+        this.input = input;
+
         this.side = side;
 
         this.maxSpeed = maxSpeed;
@@ -31,13 +37,25 @@ public class Paddle {
                 height = length;
                 width = thickness;
                 x = 0;
-                y =  Gdx.app.getGraphics().getHeight() / 2 - height / 2;
+                y = board.getHeight() / 2 - height / 2;
                 break;
             case RIGHT:
                 height = length;
                 width = thickness;
-                x = Gdx.app.getGraphics().getWidth() - width;
-                y = Gdx.app.getGraphics().getHeight() / 2 - height / 2;
+                x = board.getWidth() - width;
+                y = board.getHeight() / 2 - height / 2;
+                break;
+            case UP:
+                width = length;
+                height = thickness;
+                x = board.getWidth() / 2 - width / 2;
+                y = board.getHeight() - height;
+                break;
+            case DOWN:
+                width = length;
+                height = thickness;
+                x = board.getWidth() / 2 - width / 2;
+                y = 0;
                 break;
             default:
                 x = 0;
@@ -50,24 +68,51 @@ public class Paddle {
         rect = new Rectangle(x, y, width, height);
     }
 
+    public void reset() {
+        float x;
+        float y;
+        float width;
+        float height;
+
+        switch (side) {
+            case LEFT:
+                rect.setX(0);
+                rect.setY(board.getHeight() / 2 - rect.getHeight() / 2);
+                break;
+            case RIGHT:
+                rect.setX(board.getWidth() - rect.getWidth());
+                rect.setY(board.getHeight() / 2 - rect.getWidth() / 2);
+                break;
+            case UP:
+                rect.setX(board.getWidth() / 2 - rect.getWidth() / 2);
+                rect.setY(board.getHeight() - rect.getHeight());
+                break;
+            case DOWN:
+                rect.setX(board.getWidth() / 2 - rect.getWidth() / 2);
+                rect.setY(0);
+                break;
+        }
+    }
+
     public void draw(ShapeRenderer renderer) {
-        renderer.setColor(0, 1, 0, 1);
-        renderer.rect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+        renderer.setColor(0, 1, 0,1);
+        Vector2 pos = board.transformCoord(new Vector2(rect.getX(), rect.getY()));
+        renderer.rect(pos.x, pos.y, rect.getWidth(), rect.getHeight());
     }
 
     public void update() {
         // If we are pressing a key, change the velocity
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+        if (input.isForwardPressed()) {
             velocity += accel;
             if (velocity > maxSpeed) {
                 velocity = maxSpeed;
             }
-        } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+        } else if (input.isBackwardsPressed()) {
             velocity -= accel;
             if (velocity < -maxSpeed) {
                 velocity = -maxSpeed;
             }
-        } else {
+        } else { // Slow down after movement keys are released
             if (velocity - accel > 0) {
                 velocity -= accel;
             } else if (velocity + accel < 0) {
@@ -78,22 +123,40 @@ public class Paddle {
         }
 
         // Calculate new position based on new velocity
-        float newPos = rect.getY() + (velocity * Gdx.graphics.getDeltaTime());
-
-        // Check for wall collisions
-        if (newPos > Gdx.app.getGraphics().getHeight() - rect.getHeight()) {
-            newPos = Gdx.app.getGraphics().getHeight() - rect.getHeight();
-
-            // Makes moving off walls much more natural
-            velocity = 0;
-        } else if (newPos < 0) {
-            newPos = 0;
-
-            // Makes moving off walls much more natural
-            velocity = 0;
+        float newPos = 0;
+        if (this.getSide() == Side.LEFT || this.getSide() == Side.RIGHT) {
+            newPos = rect.getY() + (velocity * Gdx.graphics.getDeltaTime());
+        } else if (this.getSide() == Side.UP || this.getSide() == Side.DOWN){
+            newPos = rect.getX() + (velocity * Gdx.graphics.getDeltaTime());
         }
-        rect.setY(newPos);
+        // Check for wall collisions
+        if (this.getSide() == Side.LEFT || this.getSide() == Side.RIGHT) {
+            if (newPos > board.getHeight() - rect.getHeight()) {
+                newPos = board.getHeight() - rect.getHeight();
 
+                // Makes moving off walls much more natural
+                velocity = 0;
+            } else if (newPos < 0) {
+                newPos = 0;
+
+                // Makes moving off walls much more natural
+                velocity = 0;
+            }
+            rect.setY(newPos);
+        } else if (this.getSide() == Side.UP || this.getSide() == Side.DOWN) {
+            if (newPos > board.getWidth() - rect.getWidth()) {
+                newPos = board.getWidth() - rect.getWidth();
+
+                // Makes moving off walls much more natural
+                velocity = 0;
+            } else if (newPos < 0) {
+                newPos = 0;
+
+                // Makes moving off walls much more natural
+                velocity = 0;
+            }
+            rect.setX(newPos);
+        }
     }
 
     public float getLength() {
@@ -116,7 +179,24 @@ public class Paddle {
         return rect.getY();
     }
 
-    public Rectangle getRect() {
-        return rect;
+    public boolean intersects(Ball ball) {
+        Vector2 pos = new Vector2(ball.getPos());
+        switch (side) {
+            case LEFT:
+                break;
+            case RIGHT:
+                pos.x += ball.getSize();
+                break;
+            case UP:
+                pos.y += ball.getSize();
+                break;
+            case DOWN:
+                break;
+        }
+        return this.rect.contains(pos);
+    }
+
+    public Side getSide() {
+        return side;
     }
 }

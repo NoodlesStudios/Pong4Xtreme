@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class Board {
-    private Rectangle rect;
+    protected Rectangle rect;
 
     public Board(float x, float y, float width, float height) {
         rect = new Rectangle(x, y, width, height);
@@ -18,4 +18,12 @@ public abstract class Board {
     public abstract void draw(ShapeRenderer renderer);
 
     public abstract void update();
+
+    public float getWidth() {
+        return rect.getWidth();
+    }
+
+    public float getHeight() {
+        return rect.getHeight();
+    }
 }

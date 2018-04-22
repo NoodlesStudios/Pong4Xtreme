@@ -1,49 +1,82 @@
 package com.game.pong;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import java.util.*;
 
 //MULTIPLY X SPEED BY -1
 public class Ball {
     //instance variables
-    private Rectangle rect;
+    private GameBoard board;
     private Vector2 velocity;
-    private float side;
+    private Vector2 pos;
+    private float size;
     private float angle;
 
     //ctor
-    public Ball(Board board, float size) {
+    public Ball(GameBoard board, float size, float x, float y) {
         velocity = new Vector2();
+        pos = new Vector2(x,y);
         angle = 0;
-        side = size;
-        rect = new Rectangle(board.getCen(), board.getCen(), side, side);
+        this.size = size;
+        this.board = board;
         velocity.setToRandomDirection();
+        velocity.setLength(100);
+    }
+
+    public void reset() {
+        pos = new Vector2(board.getWidth() / 2 - getSize() / 2, board.getHeight() / 2 - getSize() / 2);
+        velocity.setToRandomDirection();
+        velocity.setLength(100);
     }
 
     public void updateAngle(Paddle paddle) {
-        angle = (float) Math.asin((velocity.y - paddle.getY() + (paddle.getLength() / 2)) / (paddle.getLength() / 2));
+        float ballY = pos.y;
+        float ballX = pos.x;
+        if (ballY < paddle.getY()) {
+            ballY += size;
+        }
+        if (ballX < paddle.getX()) {
+            ballX += size;
+        }
+        if (paddle.getSide() == Side.LEFT) {
+            angle = (float) Math.asin((ballY - (paddle.getY() + (paddle.getLength() / 2))) / (paddle.getLength() / 2));
+        } else if (paddle.getSide() == Side.RIGHT) {
+            angle = (float) (Math.asin((ballY - (paddle.getY() + (paddle.getLength() / 2))) / (paddle.getLength() / 2)) + Math.PI);
+        } else if (paddle.getSide() == Side.UP){
+            angle = (float) (Math.asin((ballX - (paddle.getX() + (paddle.getLength() / 2))) / (paddle.getLength() / 2)) + (3*Math.PI) / 2);
+            System.out.println(angle);
+        } else if (paddle.getSide() == Side.DOWN){
+            angle = (float) (Math.asin((ballX - (paddle.getX() + (paddle.getLength() / 2))) / (paddle.getLength() / 2)) + (Math.PI) / 2);
+        }
+        velocity.setAngleRad(angle);
     }
 
-    public void updateSpeed() {
-        velocity.rotateRad(angle);
+    public void updatePos() {
+        Vector2 scaledVel = new Vector2(this.velocity);
+        scaledVel.scl(Gdx.graphics.getDeltaTime());
+        pos.add(scaledVel);
     }
-
-
 
     public boolean hasHitWall(){
-
+        if (velocity.x > board.getSize() || velocity.x < 0){
+            return true;
+        }else if (velocity.y > board.getSize() || velocity.y < 0){
+            return true;
+        }else return false;
     }
 
     public void draw(ShapeRenderer renderer) {
         renderer.setColor(0, 1, 0, 1);
-        renderer.rect(velocity.x, velocity.y, side, side); //ball is a square
+        Vector2 transformed = board.transformCoord(pos);
+        renderer.rect(transformed.x, transformed.y, size, size);
     }
 
-    public Rectangle getRect(){
-        return rect;
+    public Vector2 getPos() {
+        return pos;
+    }
+
+    public float getSize() {
+        return size;
     }
 }
