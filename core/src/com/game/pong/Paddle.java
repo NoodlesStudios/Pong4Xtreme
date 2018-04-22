@@ -49,13 +49,13 @@ public class Paddle {
                 width = length;
                 height = thickness;
                 x = board.getWidth() / 2 - width / 2;
-                y = 0;
+                y = board.getHeight() - height;
                 break;
             case DOWN:
                 width = length;
                 height = thickness;
                 x = board.getWidth() / 2 - width / 2;
-                y = board.getHeight() - height;
+                y = 0;
                 break;
             default:
                 x = 0;
@@ -85,11 +85,11 @@ public class Paddle {
                 break;
             case UP:
                 rect.setX(board.getWidth() / 2 - rect.getWidth() / 2);
-                rect.setY(0);
+                rect.setY(board.getHeight() - rect.getHeight());
                 break;
             case DOWN:
                 rect.setX(board.getWidth() / 2 - rect.getWidth() / 2);
-                rect.setY(board.getHeight() - rect.getHeight());
+                rect.setY(0);
                 break;
         }
     }
@@ -123,22 +123,40 @@ public class Paddle {
         }
 
         // Calculate new position based on new velocity
-        float newPos = rect.getY() + (velocity * Gdx.graphics.getDeltaTime());
-
-        // Check for wall collisions
-        if (newPos > board.getHeight() - rect.getHeight()) {
-            newPos = board.getHeight() - rect.getHeight();
-
-            // Makes moving off walls much more natural
-            velocity = 0;
-        } else if (newPos < 0) {
-            newPos = 0;
-
-            // Makes moving off walls much more natural
-            velocity = 0;
+        float newPos = 0;
+        if (this.getSide() == Side.LEFT || this.getSide() == Side.RIGHT) {
+            newPos = rect.getY() + (velocity * Gdx.graphics.getDeltaTime());
+        } else if (this.getSide() == Side.UP || this.getSide() == Side.DOWN){
+            newPos = rect.getX() + (velocity * Gdx.graphics.getDeltaTime());
         }
-        rect.setY(newPos);
+        // Check for wall collisions
+        if (this.getSide() == Side.LEFT || this.getSide() == Side.RIGHT) {
+            if (newPos > board.getHeight() - rect.getHeight()) {
+                newPos = board.getHeight() - rect.getHeight();
 
+                // Makes moving off walls much more natural
+                velocity = 0;
+            } else if (newPos < 0) {
+                newPos = 0;
+
+                // Makes moving off walls much more natural
+                velocity = 0;
+            }
+            rect.setY(newPos);
+        } else if (this.getSide() == Side.UP || this.getSide() == Side.DOWN) {
+            if (newPos > board.getWidth() - rect.getWidth()) {
+                newPos = board.getWidth() - rect.getWidth();
+
+                // Makes moving off walls much more natural
+                velocity = 0;
+            } else if (newPos < 0) {
+                newPos = 0;
+
+                // Makes moving off walls much more natural
+                velocity = 0;
+            }
+            rect.setX(newPos);
+        }
     }
 
     public float getLength() {

@@ -32,13 +32,22 @@ public class Ball {
 
     public void updateAngle(Paddle paddle) {
         float ballY = pos.y;
+        float ballX = pos.x;
         if (ballY < paddle.getY()) {
             ballY += size;
         }
-        angle = (float) Math.asin((ballY - (paddle.getY() + (paddle.getLength() / 2))) / (paddle.getLength() / 2));
-
-        if (paddle.getSide() == Side.RIGHT) {
-            angle += Math.PI;
+        if (ballX < paddle.getX()) {
+            ballX += size;
+        }
+        if (paddle.getSide() == Side.LEFT) {
+            angle = (float) Math.asin((ballY - (paddle.getY() + (paddle.getLength() / 2))) / (paddle.getLength() / 2));
+        } else if (paddle.getSide() == Side.RIGHT) {
+            angle = (float) (Math.asin((ballY - (paddle.getY() + (paddle.getLength() / 2))) / (paddle.getLength() / 2)) + Math.PI);
+        } else if (paddle.getSide() == Side.UP){
+            angle = (float) (Math.asin((ballX - (paddle.getX() + (paddle.getLength() / 2))) / (paddle.getLength() / 2)) + (3*Math.PI) / 2);
+            System.out.println(angle);
+        } else if (paddle.getSide() == Side.DOWN){
+            angle = (float) (Math.asin((ballX - (paddle.getX() + (paddle.getLength() / 2))) / (paddle.getLength() / 2)) + (Math.PI) / 2);
         }
         velocity.setAngleRad(angle);
     }
