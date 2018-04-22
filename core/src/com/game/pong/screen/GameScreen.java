@@ -2,7 +2,6 @@ package com.game.pong.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,8 +15,8 @@ public class GameScreen implements Screen {
     public SpriteBatch batch;
     public BitmapFont font;
 
-    GameBoard gameBoard;
-    ScoreBoard scoreBoard;
+    public GameBoard gameBoard;
+    public ScoreBoard scoreBoard;
 
 
     public GameScreen() {
@@ -25,7 +24,7 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         font = new BitmapFont();
 
-        gameBoard = new GameBoard(0, 0, 600);
+        gameBoard = new GameBoard(0, 0, 600, this);
         scoreBoard = new ScoreBoard(600, 0, 200, 600, this);
     }
 

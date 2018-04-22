@@ -68,6 +68,32 @@ public class Paddle {
         rect = new Rectangle(x, y, width, height);
     }
 
+    public void reset() {
+        float x;
+        float y;
+        float width;
+        float height;
+
+        switch (side) {
+            case LEFT:
+                rect.setX(0);
+                rect.setY(board.getHeight() / 2 - rect.getHeight() / 2);
+                break;
+            case RIGHT:
+                rect.setX(board.getWidth() - rect.getWidth());
+                rect.setY(board.getHeight() / 2 - rect.getWidth() / 2);
+                break;
+            case UP:
+                rect.setX(board.getWidth() / 2 - rect.getWidth() / 2);
+                rect.setY(0);
+                break;
+            case DOWN:
+                rect.setX(board.getWidth() / 2 - rect.getWidth() / 2);
+                rect.setY(board.getHeight() - rect.getHeight());
+                break;
+        }
+    }
+
     public void draw(ShapeRenderer renderer) {
         renderer.setColor(0, 1, 0,1);
         Vector2 pos = board.transformCoord(new Vector2(rect.getX(), rect.getY()));
@@ -86,7 +112,7 @@ public class Paddle {
             if (velocity < -maxSpeed) {
                 velocity = -maxSpeed;
             }
-        } else {
+        } else { // Slow down after movement keys are released
             if (velocity - accel > 0) {
                 velocity -= accel;
             } else if (velocity + accel < 0) {

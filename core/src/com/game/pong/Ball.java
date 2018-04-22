@@ -24,24 +24,21 @@ public class Ball {
         velocity.setLength(100);
     }
 
+    public void reset() {
+        pos = new Vector2(board.getWidth() / 2 - getSize() / 2, board.getHeight() / 2 - getSize() / 2);
+        velocity.setToRandomDirection();
+        velocity.setLength(100);
+    }
+
     public void updateAngle(Paddle paddle) {
         float ballY = pos.y;
-        float ballX = pos.x;
         if (ballY < paddle.getY()) {
             ballY += size;
         }
-        if (ballX < paddle.getX()) {
-            ballX += size;
-        }
-        if (paddle.getSide() == Side.LEFT) {
-            angle = (float) Math.asin((ballY - (paddle.getY() + (paddle.getLength() / 2))) / (paddle.getLength() / 2));
-        } else if (paddle.getSide() == Side.RIGHT) {
-            angle = (float) (Math.asin((ballY - (paddle.getY() + (paddle.getLength() / 2))) / (paddle.getLength() / 2)) + Math.PI);
-        } else if (paddle.getSide() == Side.UP){
-            angle = (float) Math.asin((ballX - (paddle.getX() + (paddle.getLength() / 2))) / (paddle.getLength() / 2));
-            System.out.println(angle);
-        } else if (paddle.getSide() == Side.DOWN){
-            angle = (float) (Math.asin((ballX - (paddle.getX() + (paddle.getLength() / 2))) / (paddle.getLength() / 2)) + Math.PI);
+        angle = (float) Math.asin((ballY - (paddle.getY() + (paddle.getLength() / 2))) / (paddle.getLength() / 2));
+
+        if (paddle.getSide() == Side.RIGHT) {
+            angle += Math.PI;
         }
         velocity.setAngleRad(angle);
     }

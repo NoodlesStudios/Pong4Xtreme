@@ -4,8 +4,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.game.pong.input.KeyboardInput;
+import com.game.pong.screen.GameScreen;
 
 public class GameBoard extends Board {
+    GameScreen screen;
     private float size;
     private Ball ball;
     private Paddle leftPaddle;
@@ -13,8 +15,9 @@ public class GameBoard extends Board {
     private Paddle upPaddle;
     private Paddle downPaddle;
 
-    public GameBoard(float x, float y, float size){
+    public GameBoard(float x, float y, float size, GameScreen screen){
         super(x, y, size, size);
+        this.screen = screen;
         this.size = size;
 
         ball = new Ball(this, 10, this.getCen(), this.getCen());
@@ -58,6 +61,25 @@ public class GameBoard extends Board {
             ball.updateAngle(upPaddle);
         } else if (downPaddle.intersects(ball)) {
             ball.updateAngle(downPaddle);
+        }
+
+        if (!rect.contains(ball.getPos())) {
+            if (ball.getPos().x < 0) { // LEFT
+                screen.scoreBoard.incrementScore(0);
+            } else if (ball.getPos().x + ball.getSize() > getWidth()) { // RIGHT
+                screen.scoreBoard.incrementScore(1);
+            } else if (ball.getPos().y < 0) { // DOWN
+                screen.scoreBoard.incrementScore(2);
+            } else if (ball.getPos().y + ball.getSize() > getHeight()) { // UP
+                screen.scoreBoard.incrementScore(3);
+            }
+
+            // Restart game
+            ball.reset();
+            leftPaddle.reset();
+            rightPaddle.reset();
+            upPaddle.reset();
+            downPaddle.reset();
         }
     }
 

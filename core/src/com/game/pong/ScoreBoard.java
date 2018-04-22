@@ -37,4 +37,10 @@ public class ScoreBoard extends Board {
     public void update() {
 
     }
+
+    public void incrementScore(int player) {
+        if (player >= 0 && player < NUM_SCORES) {
+            scores[player]++;
+        }
+    }
 }
