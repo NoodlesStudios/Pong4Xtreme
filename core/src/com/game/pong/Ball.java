@@ -42,12 +42,11 @@ public class Ball {
         if (paddle.getSide() == Side.LEFT) {
             angle = (float) Math.asin((ballY - (paddle.getY() + (paddle.getLength() / 2))) / (paddle.getLength() / 2));
         } else if (paddle.getSide() == Side.RIGHT) {
-            angle = (float) (Math.asin((ballY - (paddle.getY() + (paddle.getLength() / 2))) / (paddle.getLength() / 2)) + Math.PI);
+            angle = (float) (-(Math.asin((ballY - (paddle.getY() + (paddle.getLength() / 2))) / (paddle.getLength() / 2))) + Math.PI);
         } else if (paddle.getSide() == Side.UP){
             angle = (float) (Math.asin((ballX - (paddle.getX() + (paddle.getLength() / 2))) / (paddle.getLength() / 2)) + (3*Math.PI) / 2);
-            System.out.println(angle);
         } else if (paddle.getSide() == Side.DOWN){
-            angle = (float) (Math.asin((ballX - (paddle.getX() + (paddle.getLength() / 2))) / (paddle.getLength() / 2)) + (Math.PI) / 2);
+            angle = (float) (-(Math.asin((ballX - (paddle.getX() + (paddle.getLength() / 2))) / (paddle.getLength() / 2))) + (Math.PI) / 2);
         }
         velocity.setAngleRad(angle);
     }
