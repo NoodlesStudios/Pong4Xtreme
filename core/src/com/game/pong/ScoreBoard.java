@@ -5,6 +5,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.game.pong.screen.GameScreen;
 
+/**
+ * <>ScoreBoard.java</>
+ *
+ * @author David Baum
+ * @version alpha
+ * @since 5.22.2018
+ */
 public class ScoreBoard extends Board {
     private static final int NUM_SCORES = 4;
 

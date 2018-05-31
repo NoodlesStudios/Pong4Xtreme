@@ -6,6 +6,14 @@ import com.badlogic.gdx.math.Rectangle;
 import com.game.pong.input.KeyboardInput;
 import com.game.pong.screen.GameScreen;
 
+/**
+ * <>GameBoard.java</>
+ * Creates the actual pong board.
+ *
+ * @author David Baum, Kairui Zhou
+ * @version alpha
+ * @since 5.22.2018
+ */
 public class GameBoard extends Board {
     GameScreen screen;
     private float size;
@@ -15,6 +23,13 @@ public class GameBoard extends Board {
     private Paddle upPaddle;
     private Paddle downPaddle;
 
+    /**
+     * TODO
+     * @param x
+     * @param y
+     * @param size
+     * @param screen
+     */
     public GameBoard(float x, float y, float size, GameScreen screen){
         super(x, y, size, size);
         this.screen = screen;
@@ -32,6 +47,10 @@ public class GameBoard extends Board {
         downPaddle = new Paddle(Side.DOWN, this, downInput, 49, 7.5f, 400, 35);
     }
 
+    /**
+     * TODO
+     * @param renderer
+     */
     @Override
     public void draw(ShapeRenderer renderer) {
         renderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -45,6 +64,9 @@ public class GameBoard extends Board {
         renderer.end();
     }
 
+    /**
+     * TODO
+     */
     @Override
     public void update(){
         leftPaddle.update();

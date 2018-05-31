@@ -5,7 +5,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.game.pong.input.PaddleInput;
-
+/**
+ * <>Paddle.java</>
+ *
+ * @author David Baum, Kairui Zhou
+ * @version alpha
+ * @since 5.22.2018
+ */
 public class Paddle {
     private Board board;
     private PaddleInput input;
@@ -18,6 +24,16 @@ public class Paddle {
     private float velocity;
     private float accel;
 
+    /**
+     * Main Constructor for the Paddle class. Has four cases for each paddle on each side.
+     * @param side
+     * @param board
+     * @param input
+     * @param length
+     * @param thickness
+     * @param maxSpeed
+     * @param accel
+     */
     Paddle(Side side, Board board, PaddleInput input, float length, float thickness, float maxSpeed, float accel) {
         this.board = board;
         this.input = input;
@@ -68,6 +84,9 @@ public class Paddle {
         rect = new Rectangle(x, y, width, height);
     }
 
+    /**
+     *
+     */
     public void reset() {
         float x;
         float y;
@@ -94,12 +113,19 @@ public class Paddle {
         }
     }
 
+    /**
+     *
+     * @param renderer
+     */
     public void draw(ShapeRenderer renderer) {
         renderer.setColor(0, 1, 0,1);
         Vector2 pos = board.transformCoord(new Vector2(rect.getX(), rect.getY()));
         renderer.rect(pos.x, pos.y, rect.getWidth(), rect.getHeight());
     }
 
+    /**
+     *
+     */
     public void update() {
         // If we are pressing a key, change the velocity
         if (input.isForwardPressed()) {
@@ -159,6 +185,11 @@ public class Paddle {
         }
     }
 
+    /**
+     * Length getter.
+     * @return The length (in pixels) of the paddle. Different depending if
+     *         paddle is upright or sideways.
+     */
     public float getLength() {
         if (side == Side.LEFT || side == Side.RIGHT){
             return rect.getHeight();
@@ -171,14 +202,27 @@ public class Paddle {
         return 0;
     }
 
+    /**
+     * X value getter.
+     * @return X-axis of the lower-left corner of the Paddle rect
+     */
     public float getX() {
         return rect.getX();
     }
 
+    /**
+     * Y value getter
+     * @return Y-axis of the lower-left corner of the Paddle rect
+     */
     public float getY() {
         return rect.getY();
     }
 
+    /**
+     * Determines whether the ball has touched the paddle
+     * @param ball A ball object (which is a recatangle)
+     * @return TODO
+     */
     public boolean intersects(Ball ball) {
         Vector2 pos = new Vector2(ball.getPos());
         switch (side) {

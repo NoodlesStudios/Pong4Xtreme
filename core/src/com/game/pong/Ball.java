@@ -5,6 +5,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 //MULTIPLY X SPEED BY -1
+
+/**
+ * <>Ball.java</>
+ * @author David Baum, Kairui Zhou
+ * @version alpha
+ * @since 5.22.2018
+ */
 public class Ball {
     //instance variables
     private GameBoard board;
@@ -13,7 +20,13 @@ public class Ball {
     private float size;
     private float angle;
 
-    //ctor
+    /**
+     *
+     * @param board
+     * @param size
+     * @param x
+     * @param y
+     */
     public Ball(GameBoard board, float size, float x, float y) {
         velocity = new Vector2();
         pos = new Vector2(x,y);
@@ -24,12 +37,20 @@ public class Ball {
         velocity.setLength(100);
     }
 
+    /**
+     * Resets the position of the ball back to the center and sets a random
+     * velocity and direction.
+     */
     public void reset() {
         pos = new Vector2(board.getWidth() / 2 - getSize() / 2, board.getHeight() / 2 - getSize() / 2);
         velocity.setToRandomDirection();
         velocity.setLength(100);
     }
 
+    /**
+     * Changes the angle of the paddle based on each collision with a paddle.
+     * @param paddle
+     */
     public void updateAngle(Paddle paddle) {
         float ballY = pos.y;
         float ballX = pos.x;
@@ -51,12 +72,19 @@ public class Ball {
         velocity.setAngleRad(angle);
     }
 
+    /**
+     * TODO
+     */
     public void updatePos() {
         Vector2 scaledVel = new Vector2(this.velocity);
         scaledVel.scl(Gdx.graphics.getDeltaTime());
         pos.add(scaledVel);
     }
 
+    /**
+     * TODO
+     * @return
+     */
     public boolean hasHitWall(){
         if (velocity.x > board.getSize() || velocity.x < 0){
             return true;
@@ -65,6 +93,10 @@ public class Ball {
         }else return false;
     }
 
+    /**
+     * TODO
+     * @param renderer
+     */
     public void draw(ShapeRenderer renderer) {
         renderer.setColor(0, 1, 0, 1);
         Vector2 transformed = board.transformCoord(pos);
