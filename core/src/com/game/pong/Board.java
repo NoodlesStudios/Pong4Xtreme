@@ -4,14 +4,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-/**
- * <>Board.java</>
- * Abstract defining characteristics of both GameBoard and ScoreBoard.
- *
- * @author David Baum, Kairui Zhou
- * @version alpha
- * @since 5.22.2018
- */
 public abstract class Board {
     protected Rectangle rect;
 

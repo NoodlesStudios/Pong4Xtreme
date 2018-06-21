@@ -5,18 +5,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.game.pong.screen.GameScreen;
 
-/**
- * <>ScoreBoard.java</>
- *
- * @author David Baum
- * @version alpha
- * @since 5.22.2018
- */
 public class ScoreBoard extends Board {
     private static final int NUM_SCORES = 4;
 
     private GameScreen screen;
     private int[] scores;
+    private String[] playerNames = { "Left", "Right", "Bottom", "Top" };
     private Vector2[] pos;
 
     public ScoreBoard(float x, float y, float width, float height, GameScreen screen) {
@@ -35,7 +29,7 @@ public class ScoreBoard extends Board {
         screen.font.setColor(Color.WHITE);
         for(int i = 0; i < NUM_SCORES; i++) {
             Vector2 scorePos = transformCoord(pos[i]);
-            screen.font.draw(screen.batch, "Player " + (i + 1), scorePos.x, scorePos.y);
+            screen.font.draw(screen.batch, playerNames[i] + " Player", scorePos.x, scorePos.y);
             screen.font.draw(screen.batch, "" + scores[i], scorePos.x, scorePos.y - 30);
         }
     }

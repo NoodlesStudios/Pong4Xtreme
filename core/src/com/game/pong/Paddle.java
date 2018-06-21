@@ -5,13 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.game.pong.input.PaddleInput;
-/**
- * <>Paddle.java</>
- *
- * @author David Baum, Kairui Zhou
- * @version alpha
- * @since 5.22.2018
- */
+
 public class Paddle {
     private Board board;
     private PaddleInput input;
@@ -227,17 +221,27 @@ public class Paddle {
         Vector2 pos = new Vector2(ball.getPos());
         switch (side) {
             case LEFT:
+                if (ball.getPos().x < rect.getX() + rect.getWidth() && ball.getPos().y + ball.getSize() > rect.getY() && ball.getPos().y < rect.getY() + rect.getHeight()) {
+                    return true;
+                }
                 break;
             case RIGHT:
-                pos.x += ball.getSize();
+                if (ball.getPos().x + ball.getSize() > rect.getX() && ball.getPos().y + ball.getSize() > rect.getY() && ball.getPos().y < rect.getY() + rect.getHeight()) {
+                    return true;
+                }
                 break;
             case UP:
-                pos.y += ball.getSize();
+                if (ball.getPos().x + ball.getSize() > rect.getX() && ball.getPos().x < rect.getX() + rect.getWidth() && ball.getPos().y + ball.getSize() > rect.getY()) {
+                    return true;
+                }
                 break;
             case DOWN:
+                if (ball.getPos().x + ball.getSize() > rect.getX() && ball.getPos().x < rect.getX() + rect.getWidth() && ball.getPos().y < rect.getY() + rect.getHeight()) {
+                    return true;
+                }
                 break;
         }
-        return this.rect.contains(pos);
+        return false;
     }
 
     public Side getSide() {

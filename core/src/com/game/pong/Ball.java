@@ -6,12 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 
 //MULTIPLY X SPEED BY -1
 
-/**
- * <>Ball.java</>
- * @author David Baum, Kairui Zhou
- * @version alpha
- * @since 5.22.2018
- */
 public class Ball {
     //instance variables
     private GameBoard board;

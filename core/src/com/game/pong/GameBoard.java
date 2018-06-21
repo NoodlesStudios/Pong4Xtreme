@@ -6,14 +6,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.game.pong.input.KeyboardInput;
 import com.game.pong.screen.GameScreen;
 
-/**
- * <>GameBoard.java</>
- * Creates the actual pong board.
- *
- * @author David Baum, Kairui Zhou
- * @version alpha
- * @since 5.22.2018
- */
 public class GameBoard extends Board {
     GameScreen screen;
     private float size;
@@ -41,10 +33,10 @@ public class GameBoard extends Board {
         KeyboardInput upInput = new KeyboardInput(Input.Keys.D, Input.Keys.A);
         KeyboardInput downInput = new KeyboardInput(Input.Keys.RIGHT, Input.Keys.LEFT);
 
-        leftPaddle = new Paddle(Side.LEFT, this, leftInput, 49, 7.5f, 400, 35);
-        rightPaddle = new Paddle(Side.RIGHT, this, rightInput, 49, 7.5f, 400, 35);
-        upPaddle = new Paddle(Side.UP, this, upInput, 49, 7.5f, 400, 35);
-        downPaddle = new Paddle(Side.DOWN, this, downInput, 49, 7.5f, 400, 35);
+        leftPaddle = new Paddle(Side.LEFT, this, leftInput, 73, 7.5f, 400, 35);
+        rightPaddle = new Paddle(Side.RIGHT, this, rightInput, 73, 7.5f, 400, 35);
+        upPaddle = new Paddle(Side.UP, this, upInput, 73, 7.5f, 400, 35);
+        downPaddle = new Paddle(Side.DOWN, this, downInput, 73, 7.5f, 400, 35);
     }
 
     /**
@@ -85,17 +77,22 @@ public class GameBoard extends Board {
             ball.updateAngle(downPaddle);
         }
 
-        if (!rect.contains(ball.getPos())) {
-            if (ball.getPos().x < 0) { // LEFT
-                screen.scoreBoard.incrementScore(0);
-            } else if (ball.getPos().x + ball.getSize() > getWidth()) { // RIGHT
-                screen.scoreBoard.incrementScore(1);
-            } else if (ball.getPos().y < 0) { // DOWN
-                screen.scoreBoard.incrementScore(2);
-            } else if (ball.getPos().y + ball.getSize() > getHeight()) { // UP
-                screen.scoreBoard.incrementScore(3);
-            }
+        boolean offScreen = false;
+        if (ball.getPos().x + ball.getSize() < 0) { // LEFT
+            screen.scoreBoard.incrementScore(0);
+            offScreen = true;
+        } else if (ball.getPos().x > getWidth()) { // RIGHT
+            screen.scoreBoard.incrementScore(1);
+            offScreen = true;
+        } else if (ball.getPos().y + ball.getSize() < 0) { // DOWN
+            screen.scoreBoard.incrementScore(2);
+            offScreen = true;
+        } else if (ball.getPos().y  > getHeight()) { // UP
+            screen.scoreBoard.incrementScore(3);
+            offScreen = true;
+        }
 
+        if (offScreen) {
             // Restart game
             ball.reset();
             leftPaddle.reset();
