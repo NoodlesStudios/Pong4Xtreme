@@ -19,7 +19,7 @@ public class Client {
     public boolean connect() throws IOException {
         channel = DatagramChannel.open();
         //noinspection Since15
-        channel.bind(new InetSocketAddress(ADDRESS, PORT));
+        //channel.bind(new InetSocketAddress(ADDRESS, PORT));
         channel.connect(new InetSocketAddress(ADDRESS, PORT));
         return isConnected();
     }
@@ -34,7 +34,8 @@ public class Client {
 
         channel.receive(buffer);
 
-        return new Packet();
+//        return new Packet();
+        return Packet.parse(buffer);
     }
 
     public Packet sendPacket(Packet packet) {
